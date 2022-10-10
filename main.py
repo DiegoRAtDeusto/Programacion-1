@@ -1,165 +1,118 @@
 #
-#	ListasII.py
+#	Modular.py
 #	Fundamentos de la programación
 #
 #	Created by Diego Revilla on the 30/09/22
 #	Copyright � 2022 Deusto. All Rights reserved
 #
 
-import random
+def check_if_list_of_integers(op):
+    return isinstance(op, list) and all(isinstance(i, int) for i in op)
 
 ###########################################################
-#   Divisibles
+#   Dos Y Cuatro
 #
-#   Prepara una lista de todos los números entre 1
-#   y 100 que sean divisibles entre 2, 3 y 5 o 7.
+#   Programa una función que reciba una lista de enteros y
+#   devuelva True si contiene un 2 o un 4, pero no ambos:
 ###########################################################
-def Divisibles():
-    numbers = []
+def DosYCuatro(numbers):
+    if check_if_list_of_integers(numbers):
+        result = False
 
-    for i in range(1, 101):
-        if i % 2 or 3 or 5 or 7 == 0:
-            numbers.append(i)
+        for i in [2, 4]:
+            if i in numbers:
+                result = not result
 
-    print(numbers)
-
-###########################################################
-#   Sin repetir
-#
-#   Prepara una lista con 100 números aleatorios
-#   de 1 a 50 y saca por pantalla otra lista que
-#   contenga esos números pero sin repeticiones
-############################################################
-def SinRepetir():
-    numbers = []
-    without_repetition = []
-
-    for i in range(0, 101):
-        numbers.append(random.randint(0, 50))
-
-    numbers.sort()
-    i = 0
-
-    while i < 100:
-        num = numbers[i]
-        without_repetition.append(num)
-        i += 1
-
-        while num == numbers[i] and i < 100: i += 1
-
-    print(without_repetition)
-
-###########################################################
-#   Más Larga
-#
-#   Recibe un texto por teclado y muestra por
-#   pantalla la palabra más larga de ese texto.
-############################################################
-def MasLarga():
-    phrase = input("Texto: ")
-    largerword = ""
-
-    for word in phrase.split():
-        if len(word) > len(largerword):
-            largerword = word
-
-    print(f'Palabra más larga: {largerword}')
-
-###########################################################
-#   Calificaciones
-#
-#   Prepara una lista con los nombres de tus
-#   asignaturas para este curso y pide por teclado
-#   las calificaciones de cada una. Finalmente,
-#   muestra por pantalla la calificación media.
-############################################################
-def Calificaciones():
-    keywords = ["Programación", "Álgebra", "Electrónica", "Cálculo", "Introducción a los Computadores"]
-    califications = 0
-
-    for key in keywords:
-        califications += int(input(f'Introduce tu calificación de {key}: '))
-
-    califications /= len(keywords)
-    print(f'Calificación media: {califications}')
-
-###########################################################
-#   Segundo más barato
-#
-#   Prepara una lista con los precios de 10
-#   productos y recorre la lista para encontrar el 2º
-#   más barato.
-############################################################
-def SegundoMasBarato():
-    prices = []
-
-    for i in range(0, 10):
-        prices.append(random.randrange(1, 150))
-
-    prices.sort()
-    print(f'Segundo más barato: {prices[1]}')
-
-###########################################################
-#   Sublista
-#
-#   Prepara dos listas de números de diferente
-#   tamaño y muestra si una lista está dentro de
-#   otra lista
-############################################################
-def Sublista():
-    a = list(input("Lista a: "))
-    b = list(input("Lista b: "))
-
-    if all(a.index(b[i]) >= 0 for i in a):
-        print("b es una sublista de a")
+        return result
     else:
-        print("b NO es una sublista de b")
+        raise ValueError("given argument is not a list of integer numbers")
 
 ###########################################################
-#   More
+#  Mayor Array
 #
-#   Prepara una lista con todas las letras del
-#   alfabeto y otra lista con sus equivalentes en
-#   código Morse en el mismo orden. Recibe una
-#   frase por teclado y muéstrala en código Morse.
-############################################################
-def Morse():
-    dictionary = {
-        'a' : ".-",
-        'b': "-...-",
-        'c': "-.-.",
-        'd': "-..",
-        'e': ".",
-        'f': "..-.",
-        'g': "--.",
-        'h': "....",
-        'i': "..",
-        'j': ".---",
-        'k': "-.--",
-        'l': ".-..",
-        'm': "--",
-        'n': "-.",
-        'o': "---",
-        'p': ".--.",
-        'q': "--.-",
-        'r': ".-.",
-        's': "...",
-        't': "-",
-        'u': "..-",
-        'v': "...-",
-        'w': ".--",
-        'x': "-..-",
-        'y': "-.--",
-        'z': "--..",
-    }
+#   Programa una función que reciba dos listas de enteros del
+#   del mismo tamaño y devuelva True si cada elemento de la 1a
+#   lista es mayor que el correspondiente elemento en la 2a lista
+###########################################################
+def Mayor(op1, op2):
+    if check_if_list_of_integers(op1) and check_if_list_of_integers(op2):
+        length = min(len(op1), len(op2))
 
-    word = input("Frase: ")
-    morse = ""
+        for i in range(0, length - 1):
+            if op1[i] < op2[i]:
+                return False
+        return True
+    else:
+        raise ValueError("given argument is not a list of integer numbers")
 
-    for i in word:
-        morse += dictionary[i]
+###########################################################
+#  Terminar Igual
+#
+#   Programa una función que reciba dos listas de enteros y un entero n.
+#   Devolverá True si la 1a lista termina igual que la 2a lista en los n
+#   últimos elementos
+###########################################################
+def TerminarIgual(op1, op2, n):
+    #if they are the incorrect type, throw an exception
+    if check_if_list_of_integers(op1) and check_if_list_of_integers(op2) and isinstance(n, int):
+        length = len(op1)
 
-    print(f"Morse: {morse}")
+        #Check that they are the same length
+        if length != len(op2):
+            raise ValueError("Both lists are not of the same size")
+
+        #check in all of the desired range that the numbers are the same
+        for i in range(n, length - 1):
+            if op1[i] != op2[i]:
+                return False
+        return True
+    else:
+        raise ValueError("Given argument is not a list of integer numbers")
+
+###########################################################
+#  DosJuntoADos
+#
+#   Programa una función que reciba una lista de enteros y
+#   devuelva True si hay un 2 junto a otro 2, o false en caso
+#   contrario
+###########################################################
+def DosJuntoADos(op):
+    assert check_if_list_of_integers(op)
+    op.sort()
+
+    if op.count(2) > 1:
+        return True
+    return False
+
+###########################################################
+#  Mayor Diferencia
+#
+#   Programa una función que reciba una lista de enteros y
+#   devuelva la diferencia entre el número más alto y el
+#   número más bajo
+###########################################################
+def mayorDiferencia(op):
+    assert check_if_list_of_integers(op)
+    return max(op) - min(op)
+
+###########################################################
+#   Rima
+#
+#   Programa una función que reciba dos strins y un entero
+#   y diga si riman, es decir, si son iguales los n últimos
+#   caracteres
+###########################################################
+def Rima(str1, str2, n):
+    assert isinstance(str1, str) and isinstance(str2, str) and isinstance(n, int)
+
+    if n > len(str1) or n > len(str2):
+        raise ValueError("N is larger than the length of the strings")
+
+    # check in all of the desired range that the numbers are the same
+    for i in range(-1, -n - 1, -1):
+        if str1[i] != str2[i]:
+            return False
+    return True
 
 #Call executing function
-if __name__ == '__main__': Morse()
+if __name__ == '__main__': print(Rima("carcasa", "pisa", 3))
