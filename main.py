@@ -64,19 +64,100 @@ def TresEnRaya():
         printBoard(board)
         func_list.reverse()
 
-def boardShipsCPU():
+def placeboat(board, x, y, horizontal, n, symbol):
+    if horizontal:
+        for i in range(0, n):
+            if x + i > 9 or y > 9 or board[y * 10 + x + i] != " ":
+                return False
 
-def boardShotsCPU():
+        for i in range(0, n):
+            board[y * 10 + x + i] = symbol
+    else:
+        for i in range(0, n):
+            if x > 9 or y + i > 9 or board[(y + i) * 10 + x] != " ":
+                return False
 
-def boardShipsHuman():
+        for i in range(0, n):
+            board[(y + i) * 10 + x] = symbol
 
-def boardShotsHuman():
+    return True
 
-def PrintBoardsHuman():
+def persistent_placement(board, n, symbol):
+    while(not placeboat(board, random.randint(0, 9), random.randint(0, 9), random.randint(0, 1), n, symbol)):
+        continue
+def boardShipsCPU(board):
+    persistent_placement(board, 5, "X")
 
-def checkWinnerBoats():
+    for i in range(0, 2):
+        persistent_placement(board, 4, "X")
+
+    for i in range(0, 3):
+        persistent_placement(board, 3, "X")
+
+    for i in range(0, 5):
+        persistent_placement(board, 1, "X")
+
+def boardShotsCPU(board):
+    while True:
+        x = random.randint(0, 9)
+        y = random.randint(0, 9)
+
+        if board[y * 10 + x] != "C":
+            board[y * 10 + x] = "C"
+            break
+
+def boardShipsHuman(board):
+    print("Place 1 destructor: ")
+
+    while(not placeboat(board, int(input("X? ")), int(input("Y?")), int(input("Horizontal?")), 5, "O")):
+        print("El barco no está bien puesto")
+
+    for i in range(0, 2):
+        while (not placeboat(board, int(input("X? ")), int(input("Y?")), int(input("Horizontal?")), 4, "O")):
+            print("El barco no está bien puesto")
+
+    for i in range(0, 3):
+        while (not placeboat(board, int(input("X? ")), int(input("Y?")), int(input("Horizontal?")), 3, "O")):
+            print("El barco no está bien puesto")
+
+    for i in range(0, 5):
+        while (not placeboat(board, int(input("X? ")), int(input("Y?")), int(input("Horizontal?")), 1, "O")):
+            print("El barco no está bien puesto")
+
+def boardShotsHuman(board):
+    x = int(input("X? "))
+    y = int(input("Y? "))
+
+    board[y * 10 + x] = "P"
+
+def PrintBoardsBoat(board):
+    for i in range(0, 10):
+        for j in range(0, 10):
+            print(f'[ {board[i * 3 + j]} ]', end = " ")
+        print("")
+def checkWinnerBoats(board):
+    if not "X" in board:
+        print("You Win!")
+        return True
+
+    if not "O" in board:
+        print("I Win!")
+        return True
+    return False
 
 def HundirlaFlota():
+    board = [" "] * (10 * 10)
+
+    func_list = [boardShotsCPU, boardShotsHuman]
+
+    boardShipsCPU(board)
+    PrintBoardsBoat(board)
+    boardShipsHuman(board)
+
+    while (not checkWinnerBoats(board)):
+        PrintBoardsBoat(board)
+        func_list[0](board)
+        func_list.reverse()
 
 #Call executing function
-if __name__ == '__main__': TresEnRaya()
+if __name__ == '__main__': HundirlaFlota()
