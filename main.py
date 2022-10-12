@@ -159,5 +159,38 @@ def HundirlaFlota():
         func_list[0](board)
         func_list.reverse()
 
+def ToogleLight(board, x, y):
+    if x < 8 and y < 8 or x < 0 and y < 0:
+        board[y * 8 + x] = "*" if board[y * 8 + x] == " " else " "
+def SwitchLights(board):
+    user_input = input("Tu Turno. Introduce fila y columna: ")
+    strings = user_input.split()
+    inputs = []
+
+    for i in strings:
+        if i.isdigit():
+            inputs.append(int(i))
+
+    ToogleLight(board, inputs[0] - 1, inputs[1])
+    ToogleLight(board, inputs[0], inputs[1] + 1)
+    ToogleLight(board, inputs[0] + 1, inputs[1])
+    ToogleLight(board, inputs[0], inputs[1] - 1)
+
+def printLights(board):
+    for i in range(0, 8):
+        for j in range(0, 8):
+            print(f'[ {board[i * 8 + j]} ]', end = " ")
+        print("")
+def SwitchOff():
+    board = [" "] * (8 * 8)
+
+    for i in range(0, 8 * 8):
+        board[i] = "*" if random.randint(0, 1) == 1 else " "
+
+    while "*" in board:
+        printLights(board)
+        SwitchLights(board)
+
+
 #Call executing function
-if __name__ == '__main__': HundirlaFlota()
+if __name__ == '__main__': SwitchOff()
